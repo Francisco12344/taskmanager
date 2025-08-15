@@ -40,6 +40,7 @@ jobs:
         echo "Secret 3 is: $PORT"
       
     - run: pm2 stop all
+    - run: pm2 restart all
 
     # Install dependencies for backend
     - name: Install Backend Dependencies
@@ -78,4 +79,3 @@ jobs:
     - run: pm2 start all
 
     - run: pm2 restart all
-    
