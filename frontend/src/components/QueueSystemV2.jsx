@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axiosInstance from '../axiosConfig';
 
 const QueueSystemV2 = () => {
@@ -25,16 +25,9 @@ const QueueSystemV2 = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Load tickets and counters when user logs in
-  useEffect(() => {
-    if (user) {
-      fetchTickets();
-      fetchCounters();
-    }
-  }, [user, fetchTickets, fetchCounters]);
-
   // Backend API calls
-  const fetchTickets = async () => {
+  const fetchTickets = useCallback(async () => {
+    if (!user) return;
     try {
       const response = await axiosInstance.get('/api/queue', {
         headers: { Authorization: `Bearer ${user.token}` },
@@ -43,9 +36,10 @@ const QueueSystemV2 = () => {
     } catch (error) {
       console.error('Failed to fetch tickets:', error);
     }
-  };
+  }, [user]);
 
-  const fetchCounters = async () => {
+  const fetchCounters = useCallback(async () => {
+    if (!user) return;
     try {
       const response = await axiosInstance.get('/api/queue/counters', {
         headers: { Authorization: `Bearer ${user.token}` },
@@ -54,7 +48,15 @@ const QueueSystemV2 = () => {
     } catch (error) {
       console.error('Failed to fetch counters:', error);
     }
-  };
+  }, [user]);
+
+  // Load tickets and counters when user logs in
+  useEffect(() => {
+    if (user) {
+      fetchTickets();
+      fetchCounters();
+    }
+  }, [user, fetchTickets, fetchCounters]);
 
   // Authentication Functions
   const handleAuth = async () => {
