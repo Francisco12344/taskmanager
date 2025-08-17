@@ -1,22 +1,32 @@
-**Task Manager Application Overview:The task manager application is designed to help users efficiently manage their tasks and responsibilities by providing a user-friendly interface for creating, viewing, updating, and deleting tasks. It includes essential features such as secure user authentication, allowing individuals to sign up and log in to their accounts, as well as profile management to update personal information. With built-in validation such as input field validation and email validation, the application ensures a seamless user experience while enhancing productivity and organization in both personal and professional settings. **
+Digital Queue Management System is created to improve customer and customer service experience with an efficient digital solution for managing and waiting in queues. The app is intended to eliminate the need for standing in line and also allowing users to see approximate time until their turn is reached and when they are up remotely in real time. It offers token generation for queue types to enhance business efficiency and increase customer satisfaction in a service aligned environment.
 
-**This apps **contain** the following features:**
+Digital Queue Management System features and abilities:
 
-* Signup
-* Login
-* Logout
-* Update profile
-* Add tasks
-* View tasks
-* Update tasks
-* Delete tasks
+Authentication Features:
+    User Registration (Signup)
+    Secure User Login
+	User Logout
+	User Profile Management
 
-**This **app**lication** is**almost **a** precompiled** app**. However, students will develop some features,**such as adding tasks, viewing tasks, updating tasks, and **deleting** tasks**. **Students** will interact with GitHub when they develop the features.**
+Token Management Features:
+	Generate Queue Tokens
+	View Token Status
+	Track Queue Position
+	Estimate Wait Times
+	Token Validation
+	Multiple Queue Types (General, VIP, Support)
+
+Queue Element Features:
+	Real-time Queue Display
+	Serve Next Token
+	Complete Token Service
+	Token removal
+	Clear Queue
 
 ---
 
 **Prerequisite:** Please install the following software and create account in following web tools** **
-
+* **Jira**
 * **Nodejs [**[https://nodejs.org/en](https://nodejs.org/en)]** **
 * **Git [**[https://git-scm.com/](https://git-scm.com/)]** **
 * **VS code editor** [[https://code.visualstudio.com/](https://code.visualstudio.com/)]** **
