@@ -12,6 +12,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 let server;
 let port;
+let sandbox;
 
 
 describe('AddTask Function Test', () => {
@@ -78,25 +79,36 @@ describe('AddTask Function Test', () => {
 
 
 describe('Update Function Test', () => {
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   it('should update task successfully', async () => {
     // Mock task data
     const taskId = new mongoose.Types.ObjectId();
+    const userId = new mongoose.Types.ObjectId();
     const existingTask = {
       _id: taskId,
+      userId: userId,
       title: "Old Task",
       description: "Old Description",
       completed: false,
       deadline: new Date(),
       save: sinon.stub().resolvesThis(), // Mock save method
     };
+    
     // Stub Task.findById to return mock task
-    const findByIdStub = sinon.stub(Task, 'findById').resolves(existingTask);
+    const findByIdStub = sandbox.stub(Task, 'findById').resolves(existingTask);
 
     // Mock request & response
     const req = {
       params: { id: taskId },
-      body: { title: "New Task", completed: true }
+      body: { title: "New Task", completed: true },
+      user: { id: userId.toString() }
     };
     const res = {
       json: sinon.spy(), 
@@ -111,17 +123,18 @@ describe('Update Function Test', () => {
     expect(existingTask.completed).to.equal(true);
     expect(res.status.called).to.be.false; // No error status should be set
     expect(res.json.calledOnce).to.be.true;
-
-    // Restore stubbed methods
-    findByIdStub.restore();
   });
 
 
 
   it('should return 404 if task is not found', async () => {
-    const findByIdStub = sinon.stub(Task, 'findById').resolves(null);
+    const findByIdStub = sandbox.stub(Task, 'findById').resolves(null);
 
-    const req = { params: { id: new mongoose.Types.ObjectId() }, body: {} };
+    const req = { 
+      params: { id: new mongoose.Types.ObjectId() }, 
+      body: {},
+      user: { id: new mongoose.Types.ObjectId().toString() }
+    };
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.spy()
@@ -131,14 +144,16 @@ describe('Update Function Test', () => {
 
     expect(res.status.calledWith(404)).to.be.true;
     expect(res.json.calledWith({ message: 'Task not found' })).to.be.true;
-
-    findByIdStub.restore();
   });
 
   it('should return 500 on error', async () => {
-    const findByIdStub = sinon.stub(Task, 'findById').throws(new Error('DB Error'));
+    const findByIdStub = sandbox.stub(Task, 'findById').throws(new Error('DB Error'));
 
-    const req = { params: { id: new mongoose.Types.ObjectId() }, body: {} };
+    const req = { 
+      params: { id: new mongoose.Types.ObjectId() }, 
+      body: {},
+      user: { id: new mongoose.Types.ObjectId().toString() }
+    };
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.spy()
@@ -148,8 +163,6 @@ describe('Update Function Test', () => {
 
     expect(res.status.calledWith(500)).to.be.true;
     expect(res.json.called).to.be.true;
-
-    findByIdStub.restore();
   });
 
 
@@ -219,16 +232,34 @@ describe('GetTask Function Test', () => {
 
 
 describe('DeleteTask Function Test', () => {
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   it('should delete a task successfully', async () => {
+    const taskId = new mongoose.Types.ObjectId();
+    const userId = new mongoose.Types.ObjectId();
+    
     // Mock request data
-    const req = { params: { id: new mongoose.Types.ObjectId().toString() } };
+    const req = { 
+      params: { id: taskId.toString() },
+      user: { id: userId.toString() }
+    };
 
     // Mock task found in the database
-    const task = { remove: sinon.stub().resolves() };
+    const task = { 
+      _id: taskId,
+      userId: userId,
+      remove: sinon.stub().resolves() 
+    };
 
-    // Stub Task.findById to return the mock task
-    const findByIdStub = sinon.stub(Task, 'findById').resolves(task);
+    // Stub Task methods
+    const findByIdStub = sandbox.stub(Task, 'findById').resolves(task);
+    const findByIdAndDeleteStub = sandbox.stub(Task, 'findByIdAndDelete').resolves();
 
     // Mock response object
     const res = {
@@ -241,19 +272,19 @@ describe('DeleteTask Function Test', () => {
 
     // Assertions
     expect(findByIdStub.calledOnceWith(req.params.id)).to.be.true;
-    expect(task.remove.calledOnce).to.be.true;
+    expect(findByIdAndDeleteStub.calledOnceWith(req.params.id)).to.be.true;
     expect(res.json.calledWith({ message: 'Task deleted' })).to.be.true;
-
-    // Restore stubbed methods
-    findByIdStub.restore();
   });
 
   it('should return 404 if task is not found', async () => {
     // Stub Task.findById to return null
-    const findByIdStub = sinon.stub(Task, 'findById').resolves(null);
+    const findByIdStub = sandbox.stub(Task, 'findById').resolves(null);
 
     // Mock request data
-    const req = { params: { id: new mongoose.Types.ObjectId().toString() } };
+    const req = { 
+      params: { id: new mongoose.Types.ObjectId().toString() },
+      user: { id: new mongoose.Types.ObjectId().toString() }
+    };
 
     // Mock response object
     const res = {
@@ -268,17 +299,17 @@ describe('DeleteTask Function Test', () => {
     expect(findByIdStub.calledOnceWith(req.params.id)).to.be.true;
     expect(res.status.calledWith(404)).to.be.true;
     expect(res.json.calledWith({ message: 'Task not found' })).to.be.true;
-
-    // Restore stubbed methods
-    findByIdStub.restore();
   });
 
   it('should return 500 if an error occurs', async () => {
     // Stub Task.findById to throw an error
-    const findByIdStub = sinon.stub(Task, 'findById').throws(new Error('DB Error'));
+    const findByIdStub = sandbox.stub(Task, 'findById').throws(new Error('DB Error'));
 
     // Mock request data
-    const req = { params: { id: new mongoose.Types.ObjectId().toString() } };
+    const req = { 
+      params: { id: new mongoose.Types.ObjectId().toString() },
+      user: { id: new mongoose.Types.ObjectId().toString() }
+    };
 
     // Mock response object
     const res = {
@@ -292,9 +323,6 @@ describe('DeleteTask Function Test', () => {
     // Assertions
     expect(res.status.calledWith(500)).to.be.true;
     expect(res.json.calledWithMatch({ message: 'DB Error' })).to.be.true;
-
-    // Restore stubbed methods
-    findByIdStub.restore();
   });
 
 });

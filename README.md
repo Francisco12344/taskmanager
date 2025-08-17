@@ -24,7 +24,7 @@ Queue Element Features:
 	Clear Queue,
 
 baseURL: 'http://localhost:5001', // local
-  //baseURL: 'http://13.211.144.78/:5001', // live
+  //baseURL: 'http://13.211.144.78:5001', // live
   http://localhost:3000
 
   cd backend and 'npm start' first if needed
