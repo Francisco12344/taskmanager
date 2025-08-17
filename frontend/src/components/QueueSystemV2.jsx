@@ -11,10 +11,9 @@ const QueueSystemV2 = () => {
   const [tickets, setTickets] = useState([]);
   const [ticketCounter, setTicketCounter] = useState({ regular: 1001, priority: 1 });
   const [activeTicket, setActiveTicket] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
   const [selectedType, setSelectedType] = useState('regular');
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [serviceSettings, setServiceSettings] = useState({
+  const [serviceSettings] = useState({
     regular: { avgTime: 8, color: 'blue' },
     priority: { avgTime: 5, color: 'purple' }
   });
@@ -32,7 +31,7 @@ const QueueSystemV2 = () => {
       fetchTickets();
       fetchCounters();
     }
-  }, [user]);
+  }, [user, fetchTickets, fetchCounters]);
 
   // Backend API calls
   const fetchTickets = async () => {
@@ -83,7 +82,6 @@ const QueueSystemV2 = () => {
   };
 
   const issueTicket = async () => {
-    const avgTime = serviceSettings[selectedType].avgTime;
     const counter = ticketCounter[selectedType];
     
     const newTicketData = {
