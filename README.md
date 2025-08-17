@@ -3,26 +3,31 @@ Digital Queue Management System is created to improve customer and customer serv
 Digital Queue Management System features and abilities:
 
 Authentication Features:
-    User Registration (Signup)
-    Secure User Login
-	User Logout
-	User Profile Management
+    User Registration (Signup),
+    Secure User Login,
+	User Logout,
+	User Profile Management,
 
 Token Management Features:
-	Generate Queue Tokens
-	View Token Status
-	Track Queue Position
-	Estimate Wait Times
-	Token Validation
-	Multiple Queue Types (General, VIP, Support)
+	Generate Queue Tokens,
+	View Token Status,
+	Track Queue Position,
+	Estimate Wait Times,
+	Token Validation,
+	Multiple Queue Types (General, VIP, Support),
 
 Queue Element Features:
-	Real-time Queue Display
-	Serve Next Token
-	Complete Token Service
-	Token removal
-	Clear Queue
+	Real-time Queue Display,
+	Serve Next Token,
+	Complete Token Service,
+	Token removal,
+	Clear Queue,
 
+baseURL: 'http://localhost:5001', // local
+  //baseURL: 'http://13.211.144.78/:5001', // live
+  http://localhost:3000
+
+  cd backend and 'npm start' first if needed
 ---
 
 **Prerequisite:** Please install the following software and create account in following web tools** **

@@ -1,21 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import Tasks from './pages/Tasks';
+import QueueSystemV2 from './components/QueueSystemV2';
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/tasks" element={<Tasks />} />
-      </Routes>
-    </Router>
+    <QueueSystemV2 />
   );
 }
 
