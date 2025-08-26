@@ -73,3 +73,4 @@ const updateUserProfile = async (req, res) => {
 module.exports = { registerUser, loginUser, updateUserProfile, getProfile };
 
 //login
+//login 3
