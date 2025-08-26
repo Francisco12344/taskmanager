@@ -79,3 +79,4 @@ module.exports = { registerUser, loginUser, updateUserProfile, getProfile };
 // signup 4
 // profile 2
 // profile 3
+// token
