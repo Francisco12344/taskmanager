@@ -98,3 +98,4 @@ const resetQueue = async (req, res) => {
 module.exports = { getTickets, issueTicket, updateTicket, deleteTicket, getCounters, resetQueue };
 
 // queue 4
+// queue 5
