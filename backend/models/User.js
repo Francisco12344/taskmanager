@@ -22,3 +22,4 @@ module.exports = mongoose.model('User', userSchema);
 //signup 3
 //signup 4
 // profile 2
+// profile 3
