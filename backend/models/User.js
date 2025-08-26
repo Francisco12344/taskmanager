@@ -21,3 +21,4 @@ module.exports = mongoose.model('User', userSchema);
 //signup 2
 //signup 3
 //signup 4
+// profile 2

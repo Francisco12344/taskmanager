@@ -77,3 +77,4 @@ module.exports = { registerUser, loginUser, updateUserProfile, getProfile };
 // signup 2
 // signup 3
 // signup 4
+// profile 2
